@@ -23,6 +23,19 @@ Note: `Measurement::add_equivalents` and `Measurement::add_eqs` are aliased.
 
 #### Take down some measurements and convert them!
 
+Conversions are done through `Measurement` instances. Instances have an amount, and a unit of measurement. Only the symbol of the unit is saved in the instance itself. 
+
+```
+# Measure.new( amount, unit )
+measure = Measurement.new 5, :feet
+measure.amount  # or alias measure.value
+# => 5 
+measure.unit   
+# => :foot
+measure.unit_symbol
+# => 'ft'
+```
+
 ```
 puts Measurement.new(2, :yards).in('inches')
 # => 72.0 inches
@@ -86,6 +99,14 @@ Measurement.add_eqs 'µm' => 1, 'å' => 1e4
 
 puts Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
 # => 500.0 µm
+```
+
+#### Specify a precision
+
+You can choose a decimal place precision to round to after each conversion. 
+
+```
+Measurement.precision = 3   # amount.round(3) after each conversion
 ```
 
 ## Installation
