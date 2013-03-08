@@ -2,7 +2,7 @@
 
 Measurement is a tool to help you convert between units of measurement. It doesn't come with any predefined conversion rates. Instead, you add desired units and provide minimal equivalency statements. 
 
-##### Add your units of interest
+#### Add units of interest
 
 ```
 Measurement.add_unit(:yard, symbol: 'yd')
@@ -12,29 +12,35 @@ Measurement.add_unit(:inches, symbol: :in)
 
 If you don't provide a symbol, it will default to the whole name of the unit. 
 
-##### Establish equivalencies. Each unit need only be mentioned once. 
+#### Establish equivalencies (each unit must only be connected once)
 
 ```
 Measurement.add_equivalents yard: 1, feet: 3
 Measurement.add_eqs foot: 1, inches: 12
 ```
 
-Note: `::add_equivalents` and `::add_eqs` are aliased. 
+Note: `Measurement::add_equivalents` and `Measurement::add_eqs` are aliased. 
 
-##### Take down some measurements and convert them!
+#### Take down some measurements and convert them!
 
 ```
 puts Measurement.new(2, :yards).in('inches')
 # => 72.0 inches
 ```
 
-You'll notice we never connected yards to inches directly. Instead, the gem follows a Breadth First Search pattern, saving intermediate conversion rates as it goes. Although we easily could have put it all in one equivalency statement:
+`WAIT!!! We never connected yards to inches!` 
+
+How the gem workds is it follows a Breadth First Search pattern, saving intermediate conversion rates as it goes. It basically calulates the conversion rates on-the-fly, based on initial values. We could have put it all in one equivalency statement (see underneath), but larger statements are more error-prone.
 
 ```
 Measurement.add_eqs yard: 1, feet: 3, inches: 36
 ```
 
-The goal is to reduce errors though, so I generally stick to 1-to-1 equivalency statements. 
+-----
+
+#### Numeric methods
+
+I gave Measurement a selection of the Numeric module methods. The most-used ones will all be there like `floor`, `ciel`, `round`, `abs` etc...
 
 ```
 puts Measurement.new(6, 'in').to(:foot).ceil
@@ -48,9 +54,9 @@ puts Measurement.new(4.32, :ft).convert_to('yds')
 
 `#in`, `#to`, and `#convert_to` are all aliased as well. 
 
-All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. And no, milliseconds 'ms' will not be confused with meters 'm'. \*\*\* Except in `Measurement::add_unit` \*\*\*
+All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. \*\*\* Except in `Measurement::add_unit` \*\*\* And no, milliseconds 'ms' will not be confused with meters 'm'. 
 
-##### Parse measurements in strings
+#### Parse measurements in strings
 
 ```
 Measurement.add_unit(:meters, symbol: 'm')
@@ -68,7 +74,7 @@ puts -Measurement.parse('-5e-2 meter')
 # => 0.05 meters
 ```
 
-##### Funny symbols
+#### Funny symbols
 
 Tested with µ and å, and should be fully fully compatible with all utf-8 characters that are considered letters.
 
@@ -82,7 +88,7 @@ puts Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
 # => 500.0 µm
 ```
 
-### Installation
+## Installation
 
 Add it to your `Gemfile`
 
@@ -92,7 +98,7 @@ gem 'measurement', github: 'aj0strow/measurement'
 
 Alternatively clone the repository and require `lib/measurement`
 
-### Contributing
+## Contributing
 
 Mostly looking for tips about irregular inflections such as `foot` and `feet` among measurements. 
 
