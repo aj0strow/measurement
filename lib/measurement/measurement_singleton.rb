@@ -34,6 +34,7 @@ class Measurement
     end
     
     def add_unit(name, params = {})
+      name = singularize(name)
       conversion_rates[name] ||= {}
       
       unit = Unit.new name, params
@@ -43,21 +44,25 @@ class Measurement
     end
     
     def get_unit(name)
-      units_table[name]
+      units_table[ unitize(name) ]
     end
     
     alias_method :[], :get_unit
     
     def remove_unit(name)
+      name = unitize(name)
       conversion_rates.delete(name)
       conversion_rates.each_value { |hash| hash.delete(name) }
       unit = units_table.delete(name)
       symbols_table.delete(unit.symbol)
     end
     
-    def add_equivalents(rates)
-      keys = rates.keys.map { |key| unitize key }
-      keys.permutation(2).each do |from, to|
+    def add_equivalents(ratios)
+      rates = {}
+      ratios.each do |key, value|
+        rates[ unitize(key) ] = value
+      end
+      rates.keys.permutation(2).each do |from, to|
         conversion_rates[from][to] = rates[to].to_f / rates[from]
       end
     end

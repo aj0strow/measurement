@@ -58,7 +58,7 @@ class Measurement
   
   def pluralized_unit
     name = unit.to_s
-    amount == 1 ? name : name.pluralize
+    amount.abs == 1 ? name : name.pluralize
   end
   
   

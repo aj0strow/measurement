@@ -1,7 +1,7 @@
 require 'rake/testtask'
 
 task :load_path do
-  %w(lib test).each do |path|
+  %w(lib test demos).each do |path|
     $LOAD_PATH.unshift File.expand_path("../#{path}", __FILE__)
   end
 end
