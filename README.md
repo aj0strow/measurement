@@ -19,9 +19,9 @@ Measurement.add_equivalents yard: 1, feet: 3
 Measurement.add_eqs foot: 1, inches: 12
 ```
 
-Note: `Measurement::add_equivalents` and `Measurement::add_eqs` are aliased. 
+Note: `Measurement::add_equivalents` and `Measurement::add_eqs` are aliases. 
 
-#### Take down some measurements and convert them!
+#### The measurement class
 
 Conversions are done through `Measurement` instances. Instances have an amount, and a unit of measurement. Only the symbol of the unit is saved in the instance itself. 
 
@@ -36,6 +36,8 @@ measure.unit_symbol
 # => 'ft'
 ```
 
+#### Take down some measurements and convert them!
+
 ```
 puts Measurement.new(2, :yards).in('inches')
 # => 72.0 inches
@@ -48,8 +50,6 @@ How the gem workds is it follows a Breadth First Search pattern, saving intermed
 ```
 Measurement.add_eqs yard: 1, feet: 3, inches: 36
 ```
-
------
 
 #### Numeric methods
 
@@ -108,6 +108,10 @@ You can choose a decimal place precision to round to after each conversion.
 ```
 Measurement.precision = 3   # amount.round(3) after each conversion
 ```
+
+----
+
+For more check out the demos in the demos folder (supposed to be minimal.) The classes are in `lib/measurement` and tests are in `test/measurement_test`. 
 
 ## Installation
 
