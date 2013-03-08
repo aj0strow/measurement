@@ -2,7 +2,7 @@
 
 Measurement is a tool to help you convert between units of measurement. It doesn't come with any predefined conversion rates. Instead, you add desired units and provide minimal equivalency statements. 
 
-![](http://www.kingsbathroom.co.uk/news/wp-content/uploads/2012/07/tape-measure.jpg)
+![](https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-snc7/481655_10151555899647269_1488239205_n.jpg)
 
 #### Add units of interest
 
