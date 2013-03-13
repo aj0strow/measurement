@@ -151,7 +151,6 @@ Mostly looking for tips about irregular inflections such as `foot` and `feet` am
 
 Some ideas for the future:
 
-- SI units - if you pass in `si: true` when adding a unit, you get every prefix for free
 - Allowing closed scopes for units instead of the current "one large conversion graph" with separate clusters 
 - Method to convert to the appropriate SI unit within the scope
 - Derived units and proper unit cancellation with operations
