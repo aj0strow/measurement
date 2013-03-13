@@ -43,4 +43,5 @@ def remove_all_units
   Measurement.units.each do |unit|
     Measurement.remove_unit(unit)
   end
+  Measurement.precision = nil
 end

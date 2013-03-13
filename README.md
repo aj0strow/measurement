@@ -111,6 +111,26 @@ You can choose a decimal place precision to round to after each conversion.
 Measurement.precision = 3   # amount.round(3) after each conversion
 ```
 
+#### Get prefixes for free
+
+You can specify a range, set, or array of the powers of ten you'd like prefixes for, or pass in true to the `:prefix` option to get them all. The prefixes are for 10 ^ -24 to 10 ^ 24.
+
+```
+Measurement.add_unit(:second, symbol: 's', prefix: true)
+puts Measurement.parse('0.085 ms').in('ns')
+# => 85000.0 nanoseconds
+
+Measurement.add_unit(:bit, symbol: 'b')
+Measurement.add_unit(:byte, symbol: 'B', prefix: 3..24)
+Measurement.add_eqs byte: 1, bits: 8
+
+puts Measurement.parse('3.2 MB').in('bits')
+# => 25600000.0 bits
+
+puts Measurement.parse('5B').to('nB')
+# => (nil)
+```
+
 ----
 
 For more check out the demos in the demos folder (supposed to be minimal.) The classes are in `lib/measurement` and tests are in `test/measurement_test`. 

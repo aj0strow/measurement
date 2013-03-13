@@ -10,6 +10,6 @@ end
 
 
 
-dirname = File.dirname(__FILE__)
+__dir__ = File.dirname(__FILE__)
 
-Dir[ File.join(dirname, 'measurement', '**', '*.rb') ].each { |file| require file }
+Dir[ File.join(__dir__, 'measurement', '**', '*.rb') ].each { |file| require file }

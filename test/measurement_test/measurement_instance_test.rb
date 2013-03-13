@@ -3,7 +3,7 @@ require 'test_helper'
 class MeasurementInstanceTest < Test::Unit::TestCase
   
   setup do
-    Measurement.add_unit(:meter, symbol: 'm', si: true)
+    Measurement.add_unit(:meter, symbol: 'm')
     Measurement.add_unit(:foot, symbol: 'ft')
     Measurement.add_unit(:yard, symbol: 'yd')
     Measurement.add_unit(:fathom, symbol: 'ftm')

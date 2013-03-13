@@ -25,7 +25,7 @@ class Measurement
       match = str.match(REGEX)
       if match
         value, name = match.captures
-        Measurement.new(value.to_f, unitize(name))
+        Measurement.new value.to_f, unitize(name)
       end
     end
     
@@ -34,13 +34,10 @@ class Measurement
     end
     
     def add_unit(name, params = {})
-      name = singularize(name)
-      conversion_rates[name] ||= {}
-      
       unit = Unit.new name, params
-      
-      units_table[name] ||= unit
-      symbols_table[unit.symbol] ||= unit
+      add_new(unit)
+      add_prefixes(unit, params[:prefix])
+      unit
     end
     
     def get_unit(name)
@@ -81,6 +78,31 @@ class Measurement
     
     
     
+    def add_new(unit)
+      conversion_rates[unit.name] ||= {}
+      units_table[unit.name] ||= unit
+      symbols_table[unit.symbol] ||= unit
+    end
+    
+    def add_prefixes(unit, prefix_range)
+      if prefix_range
+        
+        prefixes = Measurement::PREFIXES.values
+        if prefix_range.respond_to? :include?
+          prefixes = prefixes.select{ |p| prefix_range.include? p[:power]  }
+        end
+        
+        prefixes.each do |prefix|
+          name = "#{ prefix[:name] }#{ unit.name }"
+          symbol = "#{ prefix[:symbol] }#{ unit.symbol }"
+          prefix_unit = Unit.new name, symbol: symbol, si: unit.si?
+          add_new prefix_unit
+          add_eqs unit.name => 10 ** prefix[:power], prefix_unit.name => 1
+        end
+        
+      end
+    end
+        
     def bfs_calculate_rate_between(a, b)
       visiteds = Set.new( conversion_rates[a].keys )
       nexts = []
