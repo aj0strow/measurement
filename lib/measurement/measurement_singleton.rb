@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Measurement
   
   REGEX = /([0-9eE.-]*\d)\s*([[:alpha:]]+)\W*$/

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Measurement
   
   [ :+@, :-@, :ceil, :conj, :conjugate, :floor, :abs, :magnitude, :round, 
