@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Measurement
   
   def initialize(amount, unit)
