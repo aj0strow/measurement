@@ -2,7 +2,6 @@
 
 class Measurement
   class Unit
-    
     attr_reader :name
     
     def initialize(name, params = {})

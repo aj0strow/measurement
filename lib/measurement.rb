@@ -1,15 +1,6 @@
-# encoding: utf-8
+# coding: utf-8
 
-require 'rubygems'
-require 'set'
-require 'active_support/inflector'
-
-ActiveSupport::Inflector.inflections do |inflect|
-  inflect.irregular 'foot', 'feet'
+class Measurement
 end
 
-
-
-__dir__ = File.dirname(__FILE__)
-
-Dir[ File.join(__dir__, 'measurement', '**', '*.rb') ].each { |file| require file }
+Dir.glob(File.join File.dirname(__FILE__), 'measurement/*.rb') { |f| require f }

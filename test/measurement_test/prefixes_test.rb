@@ -3,12 +3,9 @@
 require 'test_helper'
 
 class PrefixesTest < Test::Unit::TestCase
-  
   setup do
     Measurement.add_unit :second, symbol: 's', prefix: true
   end
-  
-  
   
   
   test 'yotta' do
@@ -139,10 +136,7 @@ class PrefixesTest < Test::Unit::TestCase
   end
   
   
-  
-  
   teardown do
     remove_all_units
   end
-  
 end

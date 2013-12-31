@@ -1,4 +1,4 @@
-# encoding: utf-8
+# coding: utf-8
 
 class Measurement
   
@@ -62,7 +62,4 @@ class Measurement
     name = unit.to_s
     amount.abs == 1 ? name : name.pluralize
   end
-  
-  
-  
 end

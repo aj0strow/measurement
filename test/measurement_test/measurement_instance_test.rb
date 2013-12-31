@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class MeasurementInstanceTest < Test::Unit::TestCase
-  
   setup do
     Measurement.add_unit(:meter, symbol: 'm')
     Measurement.add_unit(:foot, symbol: 'ft')
@@ -12,7 +11,6 @@ class MeasurementInstanceTest < Test::Unit::TestCase
     Measurement.add_equivalents meter: 1, foot: 3.28084
     Measurement.add_equivalents fathom: 1, meter: 1.8288
   end
-  
   
     
   test 'new measurement' do
@@ -91,9 +89,7 @@ class MeasurementInstanceTest < Test::Unit::TestCase
   
     
   
-  
   teardown do
     remove_all_units
   end
-  
 end

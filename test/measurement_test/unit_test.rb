@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class UnitTest < Test::Unit::TestCase
-  
   setup do
     Unit ||= Measurement::Unit
   end
+  
   
   test 'create new unit' do
     fathom = Unit.new(:fathom)
@@ -55,6 +55,4 @@ class UnitTest < Test::Unit::TestCase
   test 'create unit with symbolic symbol' do
     assert_equal 'cm', Unit.new(:centimeter, symbol: :cm).symbol
   end
-  
-  
 end

@@ -1,4 +1,4 @@
-# encoding: utf-8
+# coding: utf-8
 
 class Measurement
   
@@ -65,7 +65,6 @@ class Measurement
         conversion_rates[from][to] = rates[to].to_f / rates[from]
       end
     end
-    
     alias_method :add_eqs, :add_equivalents
     
     def conversion_rate_between(a, b)

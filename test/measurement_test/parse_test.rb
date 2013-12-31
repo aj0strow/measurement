@@ -3,12 +3,10 @@
 require 'test_helper'
 
 class ParseTest < Test::Unit::TestCase
-  
   setup do
     Measurement.add_unit(:meter, symbol: 'm', si: true)
     Measurement.add_unit(:mole, symbol: 'mol', si: true)
   end
-  
   
   
   test 'parse no number' do
@@ -97,10 +95,7 @@ class ParseTest < Test::Unit::TestCase
   end
   
   
-  
   teardown do
     remove_all_units
-  end
-  
-  
+  end  
 end

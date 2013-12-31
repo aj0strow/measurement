@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class MeasurementSingletonTest < Test::Unit::TestCase
-  
   test 'Mesurement unitizes' do
     [ 'dog', 'dogs', :dog, :dogs ].each do |input|
       assert_equal :dog, Measurement.unitize(input)
@@ -54,10 +53,8 @@ class MeasurementSingletonTest < Test::Unit::TestCase
     assert_equal 0.5, Measurement.conversion_rate_between(:quarter, :half)
   end
 
-
   
   teardown do
     remove_all_units
   end
-  
 end
