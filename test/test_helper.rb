@@ -12,7 +12,7 @@ class Test < MiniTest::Unit::TestCase
     end
 
     def test(test_name, &block)
-      define_method("test_#{ test_name.gsub(/\s+/, '_') }", &block)
+      define_method("test #{ test_name }", &block)
     end
 
     def cleanup(&block)

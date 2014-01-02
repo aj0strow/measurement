@@ -63,9 +63,11 @@ module Measurement
       end
     end
     
-    def + measurement
-      new_amount = amount + measurement.to(unit).amount
-      self.class.new new_amount, unit
+    %w(+ - * /).each do |op|
+      define_method op do |measurement|
+        new_amount = amount.send op, measurement.to!(unit).amount
+        self.class.new new_amount, unit
+      end
     end
     
     

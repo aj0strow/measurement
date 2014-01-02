@@ -7,17 +7,34 @@ class MathTest < Test
       unit 'minute', symbol: 'm'
       eqs minute: 1, seconds: 60
     end
+    
+    @time = Measurement.new(5, 'seconds')
   end
   
-  test '+ same unit' do
-    t = Measurement.new(5, 'seconds')
-    assert_equal 10, (t + t).value
+  
+  test '+' do
+    t = @time + @time
+    assert_equal 10, t.value
   end
   
-  test '+ diff unit' do
-    t = Measurement.new(5, :seconds)
-    minute = Measurement.new(1, :minute)
-    assert_equal 65, (t + minute).value
+  test '-' do
+    t = @time - @time
+    assert_equal 0, t.value
+  end
+  
+  test '*' do
+    t = @time * @time
+    assert_equal 25, t.value
+  end
+  
+  test '/' do
+    t = @time / @time
+    assert_equal 1, t.value
+  end
+  
+  test 'operations convert to correct unit' do
+    t = @time + Measurement.new(1, :minute)
+    assert_equal 65, t.value
   end
   
   
