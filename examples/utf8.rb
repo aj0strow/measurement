@@ -1,10 +1,10 @@
 # coding: utf-8
 
-require_relative File.join('..', 'lib', 'measurement')
+require 'measurement'
 
 Measurement.define do
-  unit(:micrometer, symbol: 'µm')
-  unit(:angstrom, symbol: 'å')
+  unit :micrometer, symbol: 'µm'
+  unit :angstrom, symbol: 'å'
   eqs 'µm' => 1, 'å' => 1e4
 end
 

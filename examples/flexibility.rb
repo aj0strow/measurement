@@ -1,12 +1,12 @@
-require_relative File.join('..', 'lib', 'measurement')
+require 'measurement'
 
 Measurement.define do
   
   # Add units of interest
   
-  unit(:yard, symbol: 'yd')
-  unit('feet', symbol: :ft)
-  unit(:inches, symbol: :in)
+  unit :yard, symbol: 'yd'
+  unit 'feet', symbol: :ft
+  unit :inches, symbol: :in
   
   # Establish equivalencies 
   
@@ -24,5 +24,5 @@ puts Measurement.new(2, :yards).in('inches')
 puts Measurement.new(6, 'in').to(:foot).ceil
 # => 1 foot
 
-puts Measurement.new(4.32, :ft).convert_to('yds')
+puts Measurement.new(4.32, :ft).in('yds')
 # => 1.44 yards
