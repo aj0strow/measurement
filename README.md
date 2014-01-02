@@ -158,6 +158,20 @@ Measurement.parse('5B').to('nB')
 # => (nil)
 ```
 
+#### Sorting and Comparisons
+
+```ruby
+two_feet = Measurement.new(2, :feet)
+one_yard = Measurement.new(1, :yard)
+three_inches = Measurement.new(3, :inches)
+
+two_feet < one_yard
+=> true
+
+[ one_yard, three_inches, two_feet ].sort
+=> [ 3 inches, 2 feet, 1 yard ]
+```
+
 ----
 
 Check the examples folder for minimal stand-alone examples of functionality. Code is in `lib/measurement` and tests are in `test/measurement_test`. 

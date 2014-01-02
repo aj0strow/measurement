@@ -49,6 +49,13 @@ module Measurement
       "#<Measurement #{amount.inspect} #{unit.inspect}>"
     end
     
+    def <=> measurement
+      measurement = measurement.to! unit
+      amount <=> measurement.amount
+    end
+    
+    include Comparable
+    
     %w(+@ -@ % ceil conj conjugate floor abs magnitude round truncate real modulo divmod div).each do |action|
       define_method action do |*args|
         new_amount = amount.send action, *args
@@ -62,7 +69,7 @@ module Measurement
       end
     end
     
-    %w(+ - * /).each do |op|
+    %w(+ - * / **).each do |op|
       define_method op do |measurement|
         if measurement.is_a? send(:class)
           measurement = measurement.to!(unit).amount

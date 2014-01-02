@@ -9,4 +9,4 @@ Measurement.define do
 end
 
 puts Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
-# => 500.0 µm
+#  500.0 µm

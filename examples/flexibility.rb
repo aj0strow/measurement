@@ -19,10 +19,10 @@ end
 # Do conversions!
 
 puts Measurement.new(2, :yards).in('inches')
-# => 72.0 inches
+#  72.0 inches
 
 puts Measurement.new(6, 'in').to(:foot).ceil
-# => 1 foot
+#  1 foot
 
 puts Measurement.new(4.32, :ft).in('yds')
-# => 1.44 yards
+#  1.44 yards
