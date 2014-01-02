@@ -1,6 +1,6 @@
-# encoding: utf-8
+# coding: utf-8
 
-class Measurement
+module Measurement
   PREFIXES = {
     'Y'  => { name: 'yotta', symbol: 'Y',  power: 24  },
     'Z'  => { name: 'zetta', symbol: 'Z',  power: 21  },

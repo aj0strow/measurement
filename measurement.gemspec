@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.date        = '2013-04-06'
   s.summary     = 'Measurement'
   s.description = 'tools for converting between different units of measurements with ease'
-  s.authors     = [ 'aj0strow' ]
+  s.authors     = %w(aj0strow)
   s.email       = 'alexander.ostrow@gmail.com'
   
   s.add_dependency 'activesupport'  

@@ -1,34 +1,43 @@
-# encoding: utf-8
+# coding: utf-8
 
-class Measurement
+module Measurement
   class Unit
     attr_reader :name
     
-    def initialize(name, params = {})
-      @name = Measurement.singularize(name)
-      @symbol = params[:symbol].to_s if params[:symbol]
-      @si = !!params[:si]
+    def initialize name, options = nil
+      @name = name
+      set options unless options.nil?
+    end
+    
+    def set options
+      @symbol = options[:symbol].to_s.singularize if options.include? :symbol
+      @si = options[:si] if options.include? :si
     end
     
     def symbol
-      @symbol || name.to_s
+      @symbol || name
+    end    
+    
+    def si?
+      !!@si
     end
     
-    def si_unit?
-      @si
+    def pluralize(amount = 0)
+      amount == 1 ? name : name.pluralize
     end
     
-    alias_method :si?, :si_unit?
-    
+    def titleize(amount = 0)
+      pluralize(amount).capitalize
+    end
+        
     def to_s
-      name.to_s
+      name
     end
     
     def inspect
-      parts = [ name.inspect ]
-      parts.push "'#{@symbol}'" if @symbol
-      parts.push "si=true" if si_unit?
-      "#<Unit #{ parts.join(' ') }>"
+      parts = [ to_s ]
+      parts.push "(#{symbol})" if @symbol
+      parts.join ' '
     end
     
   end

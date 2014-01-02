@@ -1,133 +1,148 @@
 # Measurement
 
-Measurement is a tool to help you convert between units of measurement. It doesn't come with any predefined conversion rates. Instead, you add desired units and provide minimal equivalency statements. 
+> Unit conversions for humans! Add desired units and declare minimum equivalency statements. 
 
 ![](https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-snc7/481655_10151555899647269_1488239205_n.jpg)
 
-#### Add units of interest
+#### Choose Units
 
 ```
-Measurement.add_unit(:yard, symbol: 'yd')
-Measurement.add_unit('feet', symbol: :ft)
-Measurement.add_unit(:inches, symbol: :in)
+Measurement.unit :yard, symbol: 'yd'
+
+Measurement.define do
+  unit 'feet', symbol: :ft
+  unit :inches, symbol: :in
+end
 ```
 
 If you don't provide a symbol, it will default to the whole name of the unit. 
 
-#### Establish equivalencies (each unit must only be connected once)
+#### Establish Equivalencies
+
+Each unit must only be connected once. 
 
 ```
-Measurement.add_equivalents yard: 1, feet: 3
-Measurement.add_eqs foot: 1, inches: 12
+Measurement.equivalents yard: 1, feet: 3
+
+Measurement.define do
+  eqs foot: 1, inches: 12
+end
 ```
 
-Note: `Measurement::add_equivalents` and `Measurement::add_eqs` are aliases. 
+Note: `Measurement::equivalents` and `Measurement::eqs` are aliases. 
 
-#### The measurement class
+#### Measurements
 
-Conversions are done through `Measurement` instances. Instances have an amount, and a unit of measurement. Only the symbol of the unit is saved in the instance itself. 
-
-```
-# Measure.new( amount, unit )
-measure = Measurement.new 5, :feet
-measure.amount  # or alias measure.value
-# => 5 
-measure.unit   
-# => :foot
-measure.unit_symbol
-# => 'ft'
-```
-
-#### Take down some measurements and convert them!
+Conversions are done through `Measurement` instances. Instances have an amount, and a unit of measurement.
 
 ```
-puts Measurement.new(2, :yards).in('inches')
+height = Measurement.new 6, :feet
+# => 6 feet
+
+height.amount  # or height.value
+# => 6
+
+height.unit   
+# => foot
+
+height.unit.symbol
+# => "ft"
+```
+
+#### Conversions!
+
+```
+Measurement.new(2, :yards).in('inches')
 # => 72.0 inches
 ```
 
 `WAIT!!! We never connected yards to inches!` 
 
-How the gem workds is it follows a Breadth First Search pattern, saving intermediate conversion rates as it goes. It basically calulates the conversion rates on-the-fly, based on initial values. We could have put it all in one equivalency statement (see underneath), but larger statements are more error-prone.
+`Measurement` follows a Breadth First Search pattern, saving intermediate conversion rates as it goes. It calulates the conversion rates on-the-fly, based on initial values. We could have put it all in one equivalency statement (see underneath), but larger statements are more error-prone. 
 
 ```
-Measurement.add_eqs yard: 1, feet: 3, inches: 36
+Measurement.eqs yard: 1, feet: 3, inches: 36
 ```
 
 #### Numeric methods
 
-I gave Measurement a selection of the Numeric module methods. The most-used ones will all be there like `floor`, `ciel`, `round`, `abs` etc...
+Measurements have a selection of Numeric module methods. The most-used ones will be there such as `floor`, `ciel`, `round`, `abs` etc...
 
 ```
-puts Measurement.new(6, 'in').to(:foot).ceil
+Measurement.new(6, 'in').to(:foot).ceil
 # => 1 foot
 ```
 
 ```
-puts Measurement.new(4.32, :ft).convert_to('yds')
+Measurement.new(4.32, :ft).convert_to('yds')
 # => 1.44 yards
 ```
 
-`#in`, `#to`, and `#convert_to` are all aliased as well. 
+`#in`, `#to`, and `#convert_to` are all aliases. 
 
-All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. \*\*\* Except in `Measurement::add_unit` \*\*\* And no, milliseconds 'ms' will not be confused with meters 'm'. 
+All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. \*\*\* Except in `Measurement::unit` \*\*\* And no, milliseconds 'ms' will never be confused with meters 'm'. 
 
-#### Parse measurements in strings
+#### Parse Measurement Strings
 
 ```
-Measurement.add_unit(:meters, symbol: 'm')
+Measurement.unit(:meters, symbol: 'm')
 
-puts Measurement.parse('5m')
+Measurement.parse('5m')
 # => 5.0 meters
 
-puts Measurement.parse('-.3 m').abs
+Measurement.parse('-.3 m').abs
 # => 0.3 meters
 
-puts Measurement.parse('-1.0 meters').truncate
+Measurement.parse('-1.0 meters').truncate
 # => -1 meter
 
-puts -Measurement.parse('-5e-2 meter')
+Measurement.parse('-5e-2 meter') * -1
 # => 0.05 meters
 ```
 
-#### Funny symbols
+#### Funny Symbols
 
 Tested with µ and å, and should be fully fully compatible with all utf-8 characters that are considered letters.
 
 ```
-Measurement.add_unit(:micrometer, symbol: 'µm')
-Measurement.add_unit(:angstrom, symbol: 'å')
+Measurement.define do
+  unit :micrometer, symbol: 'µm'
+  unit :angstrom, symbol: 'å'
+  
+  eqs 'µm' => 1, 'å' => 1e4
+end
 
-Measurement.add_eqs 'µm' => 1, 'å' => 1e4
-
-puts Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
+Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
 # => 500.0 µm
 ```
 
-#### Specify a precision
+#### Specify Global Precision
 
-You can choose a decimal place precision to round to after each conversion. 
+You may choose a decimal place precision to round to after each conversion. 
 
 ```
 Measurement.precision = 3   # amount.round(3) after each conversion
 ```
 
-#### Get prefixes for free
+#### Get SI Prefixes For Free
 
-You can specify a range, set, or array of the powers of ten you'd like prefixes for, or pass in true to the `:prefix` option to get them all. The prefixes are for 10 ^ -24 to 10 ^ 24.
+You may specify a range, set, or array of the powers of ten you'd like prefixes for, or pass in true to the `:prefix` option to get them all. SI prefixes are for 10 ^ -24 to 10 ^ 24.
 
 ```
-Measurement.add_unit(:second, symbol: 's', prefix: true)
-puts Measurement.parse('0.085 ms').in('ns')
+Measurement.unit :second, symbol: 's', prefix: true
+Measurement.parse('0.085 ms').in('ns')
 # => 85000.0 nanoseconds
 
-Measurement.add_unit(:bit, symbol: 'b')
-Measurement.add_unit(:byte, symbol: 'B', prefix: 3..24)
-Measurement.add_eqs byte: 1, bits: 8
+Measurement.define do
+  unit :bit, symbol: 'b'
+  unit :byte, symbol: 'B', prefix: 3..24
+  eqs byte: 1, bits: 8
+end
 
-puts Measurement.parse('3.2 MB').in('bits')
+Measurement.parse('3.2 MB').in('bits')
 # => 25600000.0 bits
 
-puts Measurement.parse('5B').to('nB')
+Measurement.parse('5B').to('nB')
 # => (nil)
 ```
 

@@ -1,22 +1,21 @@
 # coding: utf-8
 
-class Measurement
+module Measurement
   class Base
+    attr_accessor :amount, :unit
+    alias_method :value, :amount
     
     def initialize(amount, unit)
       self.amount = amount
-      self.unit = self.class.unitize unit
+      self.unit = Measurement[unit]
     end
     
-    attr_reader :amount, :unit
-    alias_method :value, :amount
-    
     def convert_to(new_unit)
-      new_unit = unitize new_unit
-      ratio = self.class.conversion_rate_between unit, new_unit
+      new_unit = Measurement[new_unit]
+      ratio = Measurement.conversion_rate_between unit, new_unit
       if ratio
-        new_amount = amount * ratio
-        new_amount = new_amount.round(self.class.precision) if self.class.precision
+        new_amount = Measurement.round amount * ratio
+        self.class.new(new_amount, new_unit)
       end
     end
     alias_method :to, :convert_to
@@ -34,36 +33,32 @@ class Measurement
     def to_s(flag = :name)
       case flag
       when :name
-        "#{amount} #{pluralized_unit}"
+        "#{amount} #{unit.pluralize(amount)}"
       when :title
-        "#{amount} #{pluralized_unit.capitalize}"
+        "#{amount} #{unit.titleize(amount)}"
       when :symbol
-        "#{amount} #{unit_symbol}"
+        "#{amount} #{unit.symbol}"
       when :short
-        "#{amount}#{unit_symbol}"
+        "#{amount}#{unit.symbol}"
       end
     end
-    
+
     def inspect
       "#<Measurement #{amount} #{unit.inspect}>"
     end
     
-    def unit_symbol
-      Measurement[unit].symbol
+    %w(+@ -@ ceil conj conjugate floor abs magnitude round truncate real modulo divmod div).each do |action|
+      define_method action do |*args|
+        new_amount = amount.send action, *args
+        self.class.new new_amount, unit
+      end
     end
     
-    
-    private
-    
-    
-    def pluralized_unit
-      name = unit.to_s
-      amount.abs == 1 ? name : name.pluralize
-    end
-    
-    def unitize(str)
-      self.class.unitize str
-    end
+    %w(zero? to_i to_int to_f to_r to_c real? nonzero? integer?).each do |action|
+      define_method action do |*args|
+        amount.send action, *args
+      end
+    end  
     
   end
 end

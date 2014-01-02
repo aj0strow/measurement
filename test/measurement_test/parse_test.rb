@@ -4,8 +4,8 @@ require 'test_helper'
 
 class ParseTest < Test::Unit::TestCase
   setup do
-    Measurement.add_unit(:meter, symbol: 'm', si: true)
-    Measurement.add_unit(:mole, symbol: 'mol', si: true)
+    Measurement.unit(:meter, symbol: 'm', si: true)
+    Measurement.unit(:mole, symbol: 'mol', si: true)
   end
   
   
@@ -24,74 +24,70 @@ class ParseTest < Test::Unit::TestCase
   test 'parse integer and unit name' do
     length = Measurement.parse('1 meter')
     assert_equal 1, length.value
-    assert_equal :meter, length.unit
+    assert_equal 'meter', length.unit.name
   end
   
   test 'parse integer and plural name' do
     length = Measurement.parse('17 meters')
     assert_equal 17, length.value
-    assert_equal :meter, length.unit
+    assert_equal 'meter', length.unit.name
   end
   
-  test 'parse negative integer and name' do
+  test 'parse negative integer' do
     length = Measurement.parse('-34 meters')
     assert_equal -34, length.value
-    assert_equal :meter, length.unit
   end
   
-  test 'parse float and name' do
+  test 'parse float' do
     length = Measurement.parse('1.42 meters')
     assert_equal 1.42, length.value
-    assert_equal :meter, length.unit
   end
   
-  test 'parse negative float and name' do
+  test 'parse negative float' do
     length = Measurement.parse('-.5 meter')
     assert_equal -0.5, length.value
-    assert_equal :meter, length.unit
   end
   
   test 'parse int and symbol with space' do
     length = Measurement.parse('52 m')
     assert_equal 52, length.value
-    assert_equal :meter, length.unit
+    assert_equal 'meter', length.unit.name
   end
   
   test 'parse negative float and symbol with space' do
     length = Measurement.parse('-5.33 m')
     assert_equal -5.33, length.value
-    assert_equal :meter, length.unit
   end
   
   test 'parse negative int and symbol no space' do
     length = Measurement.parse('-2m')
     assert_equal -2, length.value
-    assert_equal :meter, length.unit
+    assert_equal 'meter', length.unit.name
   end
     
   test 'parse float and symbol no space' do
     length = Measurement.parse('.23m')
     assert_equal 0.23, length.value
-    assert_equal :meter, length.unit
+    assert_equal 'meter', length.unit.name
   end
   
   test 'parse negative exponent and symbol no space' do
     substance = Measurement.parse('1e-3mol')
     assert_equal 0.001, substance.value
-    assert_equal :mole, substance.unit
+    assert_equal 'mole', substance.unit.name
   end
   
   test 'parse random unit' do
     length = Measurement.parse('$15.23 dollars')
     assert_equal 15.23, length.value
-    assert_equal :dollar, length.unit
+    assert_equal 'dollar', length.unit.name
   end
   
   test 'parse angstroms' do
-    Measurement.add_unit(:angstrom, symbol: 'å')
+    Measurement.unit(:angstrom, symbol: 'å')
     length = Measurement.parse('5å')
     assert_equal 5, length.value
-    assert_equal :angstrom, length.unit
+    assert_equal 'angstrom', length.unit.name
   end
   
   
