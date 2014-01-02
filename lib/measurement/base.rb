@@ -5,26 +5,25 @@ module Measurement
     attr_accessor :amount, :unit
     alias_method :value, :amount
     
-    def initialize(amount, unit_name)
+    def initialize amount, unit_name
       unit = namespace.unitize unit_name
       raise ArgumentError, "no unit `#{unit_name.inspect}`" if unit.nil?
       
-      self.amount = amount
-      self.unit = unit
+      @amount, @unit = amount, unit
     end
     
-    def to(new_unit)
+    def to new_unit
       new_unit = namespace.unitize new_unit
       if unit == new_unit
-        self.class.new amount, unit
+        new amount, unit
       elsif (rate = namespace.conversion_rate_between unit, new_unit)
         new_amount = namespace.round rate * amount
-        self.class.new new_amount, new_unit
+        new new_amount, new_unit
       end
     end
     alias_method :in, :to
     
-    def to!(new_unit)
+    def to! new_unit
       to(new_unit).tap do |measurement|
         if measurement.nil?
           raise ArgumentError, "can't convert from #{unit} to #{new_unit}"
@@ -33,7 +32,7 @@ module Measurement
     end
     alias_method :in!, :to!
     
-    def to_s(flag = :name)
+    def to_s flag = :name
       case flag
       when :name
         "#{amount} #{unit.pluralize(amount)}"
@@ -50,10 +49,10 @@ module Measurement
       "#<Measurement #{amount} #{unit.inspect}>"
     end
     
-    %w(+@ -@ ceil conj conjugate floor abs magnitude round truncate real modulo divmod div).each do |action|
+    %w(+@ -@ % ceil conj conjugate floor abs magnitude round truncate real modulo divmod div).each do |action|
       define_method action do |*args|
         new_amount = amount.send action, *args
-        self.class.new new_amount, unit
+        new new_amount, unit
       end
     end
         
@@ -66,13 +65,17 @@ module Measurement
     %w(+ - * /).each do |op|
       define_method op do |measurement|
         new_amount = amount.send op, measurement.to!(unit).amount
-        self.class.new new_amount, unit
+        new new_amount, unit
       end
     end
     
     
     private
     
+    
+    def new *args
+      send(:class).new *args
+    end
     
     def namespace
       Measurement

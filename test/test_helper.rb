@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'measurement'
 
-class Test < MiniTest::Unit::TestCase
+class Test < Minitest::Unit::TestCase
   module Callbacks
     def startup(&block)
       define_singleton_method('startup', &block)
