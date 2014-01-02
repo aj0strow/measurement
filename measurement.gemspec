@@ -10,7 +10,9 @@ Gem::Specification.new do |s|
   s.authors     = %w(aj0strow)
   s.email       = 'alexander.ostrow@gmail.com'
   
-  s.add_dependency 'activesupport'  
+  s.add_dependency 'activesupport'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'minitest'
   
   s.files       = `git ls-files`.split("\n")
   s.test_files  = `git ls-files -- test`.split("\n")

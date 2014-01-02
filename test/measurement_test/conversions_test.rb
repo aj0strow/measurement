@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConversionsTest < Test::Unit::TestCase
+class ConversionsTest < Test
   test 'converting units returns nil if not possible' do
     rate = Measurement.conversion_rate_between(:apples, :oranges)
     assert_nil rate

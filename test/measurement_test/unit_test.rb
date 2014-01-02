@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UnitTest < Test::Unit::TestCase
+class UnitTest < Test
   setup do
     Unit ||= Measurement::Unit
   end

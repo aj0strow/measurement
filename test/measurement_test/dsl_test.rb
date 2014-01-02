@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DSLTest < Test::Unit::TestCase
+class DSLTest < Test
   test '#unit singularizes' do
     [ 'dog', 'dogs', :dog, :dogs ].each do |input|
       assert_equal 'dog', Measurement.unit(input).name

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class PrefixesTest < Test::Unit::TestCase
+class PrefixesTest < Test
   setup do
     Measurement.unit :second, symbol: 's', prefix: true
   end

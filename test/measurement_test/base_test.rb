@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MeasurementInstanceTest < Test::Unit::TestCase
+class BaseTest < Test
   setup do
     Measurement.define do
       unit :meter, symbol: 'm'
@@ -33,6 +33,12 @@ class MeasurementInstanceTest < Test::Unit::TestCase
     assert_equal Measurement.unit(:foot), Measurement.new(3, :feet).unit
   end
   
+  test '::new bad unit' do
+    assert_raises ArgumentError do
+      Measurement.new('nothing', 5)
+    end
+  end
+  
   test 'measurement can get unit symbol' do
     yard_stick = Measurement.new(3, 'yards')
     assert_equal 'yard', yard_stick.unit.name
@@ -54,7 +60,7 @@ class MeasurementInstanceTest < Test::Unit::TestCase
   
   test 'to! raises an exception if conversion fails' do
     apples = Measurement.new(1, :apple)
-    assert_raise ArgumentError do
+    assert_raises ArgumentError do
       apples.to! :orange
     end
   end
@@ -76,7 +82,7 @@ class MeasurementInstanceTest < Test::Unit::TestCase
   
   test 'convert fathom to feet with precision' do
     length = Measurement.new(2.4, :ftm)
-    assert_not_equal 4.8, length.in('yds').value
+    refute_equal 4.8, length.in('yds').value
     Measurement.precision = 5
     assert_equal 4.8, length.in('yds').value
   end

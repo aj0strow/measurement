@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class ParseTest < Test::Unit::TestCase
+class ParseTest < Test
   setup do
     Measurement.unit(:meter, symbol: 'm', si: true)
     Measurement.unit(:mole, symbol: 'mol', si: true)
