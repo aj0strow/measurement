@@ -1,6 +1,6 @@
 module Measurement
   module DSL
-    def define(&block)
+    def define &block
       instance_eval &block
     end
         

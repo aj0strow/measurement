@@ -46,7 +46,7 @@ module Measurement
     end
 
     def inspect
-      "#<Measurement #{amount} #{unit.inspect}>"
+      "#<Measurement #{amount.inspect} #{unit.inspect}>"
     end
     
     %w(+@ -@ % ceil conj conjugate floor abs magnitude round truncate real modulo divmod div).each do |action|

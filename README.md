@@ -15,7 +15,7 @@ Measurement.define do
 end
 ```
 
-If you don't provide a symbol, it will default to the whole name of the unit. 
+The symbol defaults to the whole name of the unit. 
 
 #### Establish Equivalencies
 
@@ -33,7 +33,7 @@ Note: `Measurement::equivalents` and `Measurement::eqs` are aliases.
 
 #### Measurements
 
-Conversions are done through `Measurement` instances. Instances have an amount, and a unit of measurement.
+Conversions are done through `Measurement::Base` instances. Instances have an amount, and a unit (`Measurement::Unit`).
 
 ```
 height = Measurement.new 6, :feet

@@ -22,11 +22,11 @@ module Measurement
       !!@si
     end
     
-    def pluralize(amount = 0)
+    def pluralize amount = 0
       amount == 1 ? name : name.pluralize
     end
     
-    def titleize(amount = 0)
+    def titleize amount = 0
       pluralize(amount).capitalize
     end
         
@@ -35,9 +35,9 @@ module Measurement
     end
     
     def inspect
-      parts = [ to_s ]
-      parts.push "(#{symbol})" if @symbol
-      parts.join ' '
+      parts = [ '#<Unit ', name ]
+      parts << " (#{symbol})" if @symbol
+      parts.push('>').join
     end
     
   end
