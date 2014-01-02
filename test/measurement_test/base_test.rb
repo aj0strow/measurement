@@ -3,10 +3,13 @@ require 'test_helper'
 class MeasurementInstanceTest < Test::Unit::TestCase
   setup do
     Measurement.define do
-      unit(:meter, symbol: 'm')
-      unit(:foot, symbol: 'ft')
-      unit(:yard, symbol: 'yd')
-      unit(:fathom, symbol: 'ftm')
+      unit :meter, symbol: 'm'
+      unit :foot, symbol: 'ft'
+      unit :yard, symbol: 'yd'
+      unit :fathom, symbol: 'ftm'
+      
+      unit :apples
+      unit :oranges
       
       equivalents yard: 1, foot: 3
       equivalents meter: 1, foot: 3.28084
@@ -49,10 +52,10 @@ class MeasurementInstanceTest < Test::Unit::TestCase
     assert_nil apples.to(:oranges)
   end
   
-  test 'convert_to! raises an exception if conversion fails' do
+  test 'to! raises an exception if conversion fails' do
     apples = Measurement.new(1, :apple)
     assert_raise ArgumentError do
-      apples.convert_to! :orange
+      apples.to! :orange
     end
   end
   
@@ -68,7 +71,7 @@ class MeasurementInstanceTest < Test::Unit::TestCase
   
   test 'convert meters to yards' do
     length = Measurement.new(3, :meters)
-    assert_equal 3.28084, length.convert_to('yards').value
+    assert_equal 3.28084, length.to('yards').value
   end
   
   test 'convert fathom to feet with precision' do

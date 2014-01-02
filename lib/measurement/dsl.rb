@@ -1,7 +1,7 @@
 module Measurement
   module DSL
     def define(&block)
-      self.instance_eval &block
+      instance_eval &block
     end
         
     def unit name, options = {}
@@ -18,10 +18,6 @@ module Measurement
     end
     alias_method :eqs, :equivalents
     
-    
-    private
-    
-    
     def unitize unit
       case unit
       when Unit
@@ -29,11 +25,15 @@ module Measurement
       else
         name = unit.to_s
         fetch name do
-          fetch name.singularize
+          fetch name.singularize, nil
         end
       end
     end
     
+    
+    private
+    
+        
     def create name, options
       name = name.to_s.singularize
       unit = Unit.new name, options

@@ -5,30 +5,33 @@ module Measurement
     attr_accessor :amount, :unit
     alias_method :value, :amount
     
-    def initialize(amount, unit)
+    def initialize(amount, unit_name)
+      unit = namespace.unitize unit_name
+      raise ArgumentError, "no unit `#{unit_name.inspect}`" if unit.nil?
+      
       self.amount = amount
-      self.unit = Measurement[unit]
+      self.unit = unit
     end
     
-    def convert_to(new_unit)
-      new_unit = Measurement[new_unit]
-      ratio = Measurement.conversion_rate_between unit, new_unit
-      if ratio
-        new_amount = Measurement.round amount * ratio
-        self.class.new(new_amount, new_unit)
+    def to(new_unit)
+      new_unit = namespace.unitize new_unit
+      if unit == new_unit
+        self.class.new amount, unit
+      elsif (rate = namespace.conversion_rate_between unit, new_unit)
+        new_amount = namespace.round rate * amount
+        self.class.new new_amount, new_unit
       end
     end
-    alias_method :to, :convert_to
-    alias_method :in, :convert_to
+    alias_method :in, :to
     
-    def convert_to!(new_unit)
-      converted = convert_to new_unit
-      unless converted
-        raise ArgumentError, "can't convert from #{unit} to #{new_unit}"
+    def to!(new_unit)
+      to(new_unit).tap do |measurement|
+        if measurement.nil?
+          raise ArgumentError, "can't convert from #{unit} to #{new_unit}"
+        end
       end
     end
-    alias_method :to!, :convert_to!
-    alias_method :in!, :convert_to!
+    alias_method :in!, :to!
     
     def to_s(flag = :name)
       case flag
@@ -53,12 +56,20 @@ module Measurement
         self.class.new new_amount, unit
       end
     end
-    
+        
     %w(zero? to_i to_int to_f to_r to_c real? nonzero? integer?).each do |action|
       define_method action do |*args|
         amount.send action, *args
       end
-    end  
+    end
+    
+    
+    private
+    
+    
+    def namespace
+      Measurement
+    end
     
   end
 end

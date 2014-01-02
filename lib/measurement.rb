@@ -38,7 +38,7 @@ module Measurement
     match = string.match REGEX
     if match
       value, name = match.captures
-      Base.new value.to_f, name
+      Base.new value.to_f, unit(name)
     end
   end
   
