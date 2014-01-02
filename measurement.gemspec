@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest', '4.2'
+  s.add_development_dependency 'minitest-colorize'
   
   s.files       = `git ls-files`.split("\n")
   s.test_files  = `git ls-files -- test`.split("\n")

@@ -64,7 +64,10 @@ module Measurement
     
     %w(+ - * /).each do |op|
       define_method op do |measurement|
-        new_amount = amount.send op, measurement.to!(unit).amount
+        if measurement.is_a? send(:class)
+          measurement = measurement.to!(unit).amount
+        end
+        new_amount = amount.send op, measurement
         new new_amount, unit
       end
     end

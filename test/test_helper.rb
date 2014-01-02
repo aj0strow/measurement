@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require 'minitest/colorize'
 require 'measurement'
 
 class Test < Minitest::Unit::TestCase

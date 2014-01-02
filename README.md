@@ -6,7 +6,7 @@
 
 #### Choose Units
 
-```
+```ruby
 Measurement.unit :yard, symbol: 'yd'
 
 Measurement.define do
@@ -21,25 +21,25 @@ The symbol defaults to the whole name of the unit.
 
 Each unit must only be connected once. 
 
-```
-Measurement.equivalents yard: 1, feet: 3
+```ruby
+Measurement.eqs yard: 1, feet: 3
 
 Measurement.define do
-  eqs foot: 1, inches: 12
+  equivalents foot: 1, inches: 12
 end
 ```
 
 Note: `Measurement::equivalents` and `Measurement::eqs` are aliases. 
 
-#### Measurements
+#### Create Measurements
 
 Conversions are done through `Measurement::Base` instances. Instances have an amount, and a unit (`Measurement::Unit`).
 
-```
+```ruby
 height = Measurement.new 6, :feet
 # => 6 feet
 
-height.amount  # or height.value
+height.amount  # alias: height.value
 # => 6
 
 height.unit   
@@ -51,40 +51,52 @@ height.unit.symbol
 
 #### Conversions!
 
-```
+```ruby
 Measurement.new(2, :yards).in('inches')
 # => 72.0 inches
 ```
 
-`WAIT!!! We never connected yards to inches!` 
+> WAIT!!! We never connected yards to inches!` 
 
 `Measurement` follows a Breadth First Search pattern, saving intermediate conversion rates as it goes. It calulates the conversion rates on-the-fly, based on initial values. We could have put it all in one equivalency statement (see underneath), but larger statements are more error-prone. 
 
-```
+```ruby
 Measurement.eqs yard: 1, feet: 3, inches: 36
 ```
 
-#### Numeric methods
+#### Math
+
+All operations are supported. Measurements with different units are handled correctly. 
+
+```ruby
+Measurement.new(3, :feet) + Measurement.new(6, :inches)
+# => 3.5 feet
+
+Measurement.new(3, :feet) / 3
+# => 1 foot
+```
+
+#### Numeric Methods
 
 Measurements have a selection of Numeric module methods. The most-used ones will be there such as `floor`, `ciel`, `round`, `abs` etc...
 
-```
+```ruby
 Measurement.new(6, 'in').to(:foot).ceil
 # => 1 foot
 ```
 
-```
-Measurement.new(4.32, :ft).convert_to('yds')
+```ruby
+Measurement.new(4.32, :ft).in('yds')
 # => 1.44 yards
 ```
 
-`#in`, `#to`, and `#convert_to` are all aliases. 
+Note: `#in` and `#to` are aliases.
 
-All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. \*\*\* Except in `Measurement::unit` \*\*\* And no, milliseconds 'ms' will never be confused with meters 'm'. 
+All of the following are interchangeable in method calls and constructors: `:yards, :yard, :yds, :yd, 'yards', 'yard', 'yds', 'yd'`. \*\*\* Except in `Measurement::unit` definitions. \*\*\* And no, milliseconds 'ms' will never be confused with meters 'm'. 
 
 #### Parse Measurement Strings
 
-```
+```ruby
 Measurement.unit(:meters, symbol: 'm')
 
 Measurement.parse('5m')
@@ -96,7 +108,7 @@ Measurement.parse('-.3 m').abs
 Measurement.parse('-1.0 meters').truncate
 # => -1 meter
 
-Measurement.parse('-5e-2 meter') * -1
+- Measurement.parse('-5e-2 meter')
 # => 0.05 meters
 ```
 
@@ -104,7 +116,7 @@ Measurement.parse('-5e-2 meter') * -1
 
 Tested with µ and å, and should be fully fully compatible with all utf-8 characters that are considered letters.
 
-```
+```ruby
 Measurement.define do
   unit :micrometer, symbol: 'µm'
   unit :angstrom, symbol: 'å'
@@ -120,15 +132,15 @@ Measurement.parse(' 5e6 å ').to('µm').to_s(:symbol)
 
 You may choose a decimal place precision to round to after each conversion. 
 
-```
-Measurement.precision = 3   # amount.round(3) after each conversion
+```ruby
+Measurement.precision = 3   # round(3) after each conversion
 ```
 
-#### Get SI Prefixes For Free
+#### Magnitude Prefixes
 
 You may specify a range, set, or array of the powers of ten you'd like prefixes for, or pass in true to the `:prefix` option to get them all. SI prefixes are for 10 ^ -24 to 10 ^ 24.
 
-```
+```ruby
 Measurement.unit :second, symbol: 's', prefix: true
 Measurement.parse('0.085 ms').in('ns')
 # => 85000.0 nanoseconds
@@ -148,24 +160,27 @@ Measurement.parse('5B').to('nB')
 
 ----
 
-For more check out the demos in the demos folder (supposed to be minimal.) The classes are in `lib/measurement` and tests are in `test/measurement_test`. 
+Check the examples folder for minimal stand-alone examples of functionality. Code is in `lib/measurement` and tests are in `test/measurement_test`. 
 
 ## Installation
 
-Add it to your `Gemfile`
+Add measurement to your `Gemfile`:
 
 ```
 gem 'measurement', github: 'aj0strow/measurement'
 ```
 
-Alternatively clone the repository and require `lib/measurement`
+And then require it:
+
+```ruby
+require 'measurement'
+```
 
 ## Contributing
 
-Mostly looking for tips about irregular inflections such as `foot` and `feet` among measurements. 
+Mostly looking for tips about irregular inflections such as `foot` and `feet` among measurement names and symbols. 
 
 Some ideas for the future:
 
-- Allowing closed scopes for units instead of the current "one large conversion graph" with separate clusters 
-- Method to convert to the appropriate SI unit within the scope
+- Method to convert to an available SI unit
 - Derived units and proper unit cancellation with operations

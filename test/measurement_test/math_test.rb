@@ -37,6 +37,11 @@ class MathTest < Test
     assert_equal 65, t.value
   end
   
+  test 'operations allow numbers' do
+    t = @time * 2
+    assert_equal 10, t.value
+  end
+  
   
   teardown do
     remove_all_units
