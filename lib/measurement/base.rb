@@ -63,6 +63,11 @@ module Measurement
       end
     end
     
+    def + measurement
+      new_amount = amount + measurement.to(unit).amount
+      self.class.new new_amount, unit
+    end
+    
     
     private
     

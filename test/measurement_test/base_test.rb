@@ -35,7 +35,7 @@ class BaseTest < Test
   
   test '::new bad unit' do
     assert_raises ArgumentError do
-      Measurement.new('nothing', 5)
+      Measurement.new(5, 'nothings')
     end
   end
   
