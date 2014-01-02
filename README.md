@@ -1,4 +1,4 @@
-# Measurement
+# Measurement ![](https://travis-ci.org/aj0strow/measurement.png)
 
 > Unit conversions for humans! Add desired units and declare minimum equivalency statements. 
 
@@ -114,7 +114,7 @@ Measurement.parse('-1.0 meters').truncate
 
 #### Funny Symbols
 
-Tested with µ and å, and should be fully fully compatible with all utf-8 characters that are considered letters.
+Tested with µ and å, and should be fully compatible with all utf-8 characters that are considered letters.
 
 ```ruby
 Measurement.define do
