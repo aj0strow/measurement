@@ -172,6 +172,18 @@ two_feet < one_yard
 => [ 3 inches, 2 feet, 1 yard ]
 ```
 
+#### Eval Measurement Expressions
+
+```ruby
+Measurement.eval '3 feet + 3 inches'
+# => 3.25 feet
+
+Measurement.eval '1yd == 3ft'
+# => true
+```
+
+Note: Float arithmetic is bad for boolean comparisons, so set a global precision to round the floats if a comparison is not coming out right. 
+
 ----
 
 Check the examples folder for minimal stand-alone examples of functionality. Code is in `lib/measurement` and tests are in `test/measurement_test`. 

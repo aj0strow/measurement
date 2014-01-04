@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ParseTest < Test
   setup do
-    Measurement.unit(:meter, symbol: 'm', si: true)
+    Measurement.unit(:meter, symbol: 'm', prefix: true, si: true)
     Measurement.unit(:mole, symbol: 'mol', si: true)
   end
   
@@ -18,6 +18,7 @@ class ParseTest < Test
   test 'parse no units' do
     assert_nil Measurement.parse('123')
     assert_nil Measurement.parse('123.13')
+    assert_nil Measurement.parse('34e4 /')
     assert_nil Measurement.parse('-31233e-3 ?')
   end
   
@@ -77,17 +78,16 @@ class ParseTest < Test
     assert_equal 'mole', substance.unit.name
   end
   
-  test 'parse random unit' do
-    length = Measurement.parse('$15.23 dollars')
-    assert_equal 15.23, length.value
-    assert_equal 'dollar', length.unit.name
-  end
-  
   test 'parse angstroms' do
     Measurement.unit(:angstrom, symbol: 'å')
     length = Measurement.parse('5å')
     assert_equal 5, length.value
     assert_equal 'angstrom', length.unit.name
+  end
+  
+  test 'simple eval' do
+    m = Measurement.eval '1m + 2cm'
+    assert_equal 1.02, m.value
   end
   
   

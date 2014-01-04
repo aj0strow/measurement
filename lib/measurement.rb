@@ -3,18 +3,16 @@
 Dir.glob(File.join File.dirname(__FILE__), 'measurement/*.rb') { |f| require f }
 
 module Measurement
-  @_units = {}
-  @_symbols = {}
-  @_rates = {}
   @precision = nil
-  
   attr_accessor :precision
+  
+  @_units, @_symbols, @_rates = {}, {}, {}
   attr_reader :_units, :_symbols, :_rates
-    
+  
   def new *args
     Base.new *args
   end
-    
+  
   def units
     _units.values
   end
@@ -31,15 +29,20 @@ module Measurement
   def round value
     precision.nil? ? value : value.round(precision)  
   end
+  
+  REGEX = /([\deE.-]*\d)\s*([[:alpha:]]+)\b(?![-\d])/
     
-  REGEX = /([0-9eE.-]*\d)\s*([[:alpha:]]+)\W*$/
-    
-  def parse(string)
+  def parse string
     match = string.match REGEX
     if match
       value, name = match.captures
-      Base.new value.to_f, unit(name)
+      Base.new value.to_f, unitize(name)
     end
+  end
+  
+  def eval string
+    statement = string.gsub REGEX, 'Measurement.new(\1, "\2")'
+    Kernel.eval statement
   end
   
   extend self

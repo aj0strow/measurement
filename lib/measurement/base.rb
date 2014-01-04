@@ -49,6 +49,10 @@ module Measurement
       "#<Measurement #{amount.inspect} #{unit.inspect}>"
     end
     
+    def == measurement
+      measurement.is_a? Measurement::Base and measurement.to!(unit).amount == amount
+    end
+    
     def <=> measurement
       measurement = measurement.to! unit
       amount <=> measurement.amount
